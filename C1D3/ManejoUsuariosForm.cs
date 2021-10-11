@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using Domain;
 
@@ -22,7 +18,7 @@ namespace Admin
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            _usuarioActual = new Usuario();
+            _usuarioActual = new Usuario();            
             _nuevoRegistro = true;
             
             CargarUsuarioActual();
@@ -41,18 +37,35 @@ namespace Admin
             _usuarioActual.Nombre = txtNombre.Text;
             _usuarioActual.Clave= txtClave.Text;
 
-            // guardar datos
-            if(_nuevoRegistro)
-                Persistence.UsuariosRepository.Add(_usuarioActual);
-            else
-                Persistence.UsuariosRepository.Update(_usuarioActual);
+            _usuarioActual.Email = txtMail.Text;
 
-            CargarLista();
+            _usuarioActual.FechaNacimiento = dtpFechaNacimiento.Value ;
 
-            panRegistro.Visible = false;
+
+            try
+            {
+                // guardar datos
+                if (_nuevoRegistro)
+                    Persistence.UsuariosRepository.Add(_usuarioActual);
+                else
+                    Persistence.UsuariosRepository.Update(_usuarioActual);
+
+                CargarLista();
+
+                panRegistro.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }  
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
+        {
+            EditarUsuario();
+        }
+
+        private void EditarUsuario()
         {
             if (listUsuarios.SelectedItem != null)
             {
@@ -69,6 +82,8 @@ namespace Admin
             txtLogin.Text = _usuarioActual.Login;
             txtNombre.Text = _usuarioActual.Nombre;
             txtClave.Text = _usuarioActual.Clave;
+            txtMail.Text = _usuarioActual.Email;
+            dtpFechaNacimiento.Value = _usuarioActual.FechaNacimiento;
 
             txtLogin.Enabled = _nuevoRegistro;
         }
@@ -88,6 +103,21 @@ namespace Admin
             }
         }
 
-        
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (listUsuarios.SelectedItem != null)
+            {
+                _usuarioActual = listUsuarios.SelectedItem as Usuario;
+
+                Persistence.UsuariosRepository.Delete(_usuarioActual);
+                CargarLista();
+                MessageBox.Show("El usuario ha sido eliminado");
+            }
+        }
+
+        private void listUsuarios_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            EditarUsuario();
+        }
     }
 }

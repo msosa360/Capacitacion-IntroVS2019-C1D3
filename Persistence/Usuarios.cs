@@ -11,9 +11,14 @@ namespace Persistence
 
         public static void Add(Usuario usuario)
         {
-            if (Usuarios.Contains(usuario))
-                throw new Exception("El usuario ya existe");
-
+            foreach (var item in Usuarios)
+            {
+                if(item.Login == usuario.Login)
+                {
+                    throw new Exception("El usuario ya existe");
+                }
+            }
+            
             Usuarios.Add(usuario);
         }
 
@@ -44,9 +49,9 @@ namespace Persistence
 
         public static void LoadTestData()
         {
-            Usuarios.Add(new Usuario { Login = "admin", Nombre = "Administrador", Clave = "1234" });
-            Usuarios.Add(new Usuario { Login = "usr1", Nombre = "Usuario 1", Clave = "1234" });
-            Usuarios.Add(new Usuario { Login = "usr2", Nombre = "Usuario 2", Clave = "1234" });
+            Usuarios.Add(new Usuario { Login = "admin", Nombre = "Administrador", Clave = "1234", FechaNacimiento = DateTime.Today });
+            Usuarios.Add(new Usuario { Login = "usr1", Nombre = "Usuario 1", Clave = "1234", FechaNacimiento = DateTime.Today });
+            Usuarios.Add(new Usuario { Login = "usr2", Nombre = "Usuario 2", Clave = "1234", FechaNacimiento = DateTime.Today });
         }
     }
 }
