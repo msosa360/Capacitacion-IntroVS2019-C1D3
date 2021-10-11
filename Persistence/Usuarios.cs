@@ -7,6 +7,11 @@ namespace Persistence
 {
     public static class UsuariosRepository
     {
+        static UsuariosRepository()
+        {
+            LoadTestData();    
+        }
+
         private static List<Usuario> Usuarios { get; set; } = new List<Usuario>();
 
         public static void Add(Usuario usuario)
@@ -46,6 +51,18 @@ namespace Persistence
         {
             return Usuarios;
         }
+
+        public static Usuario Get(string login)
+        {
+            foreach (var usuario in Usuarios)
+            {
+                if (usuario.Login == login)
+                    return usuario;
+            }
+
+            return null;
+        }
+
 
         public static void LoadTestData()
         {

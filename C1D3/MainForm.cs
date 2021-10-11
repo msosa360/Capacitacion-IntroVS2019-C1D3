@@ -10,7 +10,7 @@ namespace C1D3
         {
             InitializeComponent();
 
-            Persistence.UsuariosRepository.LoadTestData();
+            //Persistence.UsuariosRepository.LoadTestData();
         }
 
         private void btnAltaUsuario_Click(object sender, EventArgs e)
